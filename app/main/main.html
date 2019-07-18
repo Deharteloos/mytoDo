@@ -1,0 +1,191 @@
+<!--
+<p>This is the partial for view 1.</p>
+-->
+
+<script> new WOW().init();
+</script>
+
+<div class="main"
+     style="background-image: url('images/background.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+    <div class="mask rgba-black-light align-items-center">
+        <!-- Content -->
+        <div class="container-fluid">
+            <!--Grid row-->
+            <div class="row">
+                <!--Grid column-->
+                <div class="col-md-12 mb-4 white-text text-center">
+                    <!--<h1 class="h1-reponsive white-text font-weight-bold mb-0 pt-md-5 pt-5 wow fadeInDown"
+                        data-wow-delay="0.3s"
+                        style="font-size: 5rem; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif ">
+                        to D<img class="ichome" src="images/icon_home-2.png" alt="ToDo"></h1>-->
+                    <h1 class="h1-reponsive white-text font-weight-bold mb-0 pt-md-5 pt-5 wow fadeInDown animated" data-wow-delay="0.3s" style="font-size: 5rem; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif ; visibility: visible; animation-name: fadeInDown; animation-delay: 0.3s;">
+                        to D<img class="ichome" src="images/icon_home-2.png" alt="ToDo"></h1>
+                    <!--<hr class="hr-light my-4 wow fadeInDown" data-wow-delay="0.4s">-->
+                    <hr class="hr-light my-4 wow fadeInDown animated" data-wow-delay="0.4s" style="visibility: visible; animation-name: fadeInDown; animation-delay: 0.4s;">
+                    <!--<h5 class="mb-4 white-text wow fadeInDown" data-wow-delay="0.4s"><strong>Lorem ipsum dolor sit amet
+                        consectetur adipisicing elit. Quisquam, aperiam?</strong></h5>-->
+                    <h5 class="mb-4 white-text wow fadeInDown animated" data-wow-delay="0.4s" style="visibility: visible; animation-name: fadeInDown; animation-delay: 0.4s;"><strong>Lorem ipsum dolor sit amet
+                        consectetur adipisicing elit. Quisquam, aperiam?</strong></h5>
+                    <!--<a data-toggle="modal" data-target="#inscription" class="btn btn-outline-white wow fadeInDown"
+                       data-wow-delay="0.4s">S'inscrire</a>-->
+                    <a data-toggle="modal" data-target="#inscription" class="btn btn-outline-white wow fadeInDown animated" data-wow-delay="0.4s" style="visibility: visible; animation-name: fadeInDown; animation-delay: 0.4s;">S'inscrire</a>
+                    <!--<a data-toggle="modal" data-target="#connexion" class="btn btn-outline-white wow fadeInDown"
+                       data-wow-delay="0.4s">Se connecter</a>-->
+                    <a data-toggle="modal" data-target="#connexion" class="btn btn-outline-white wow fadeInDown animated" data-wow-delay="0.4s" style="visibility: visible; animation-name: fadeInDown; animation-delay: 0.4s;">Se connecter</a>
+                </div>
+                <!--Grid column-->
+            </div>
+            <!--Grid row-->
+        </div>
+        <!-- Content -->
+    </div>
+
+    <div ng-controller="InscriptionCtrl" class="modal fade" id="inscription" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+        <div class="modal-dialog modal-notify" role="document">
+            <!--Content-->
+            <div class="modal-content">
+                <!--Header-->
+                <div class="modal-header text-center">
+                    <h4 class="modal-title white-text w-100 font-weight-bold py-2">Inscription</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" class="white-text">&times;</span>
+                    </button>
+                </div>
+
+                <form class="css-form" name="incriptionForm" novalidate>
+                    <!--Body-->
+                    <div class="modal-body">
+                        <div class="md-form">
+                            <i class="fas fa-user prefix grey-text"></i>
+                            <input type="text" id="name" name="name" class="form-control" ng-model="user.name" ng-required="true">
+                            <label data-error="wrong" data-success="right" for="name">Nom</label>
+                        </div>
+
+                        <div class="md-form mb-5">
+                            <i class="fas fa-envelope prefix grey-text"></i>
+                            <input type="email" id="email" name="email" class="form-control" ng-model="user.email" required>
+                            <label data-error="wrong" data-success="right" for="email">Email</label>
+                        </div>
+
+                        <div class="md-form">
+                            <i class="fas fa-user prefix grey-text"></i>
+                            <input type="text" id="username" class="form-control" ng-model="user.username" required>
+                            <label data-error="wrong" data-success="right" for="username">Pseudo</label>
+                        </div>
+
+                        <div class="md-form form-sm">
+                            <i class="fas fa-lock prefix grey-text"></i>
+                            <input type="password" id="password" name="password" class="form-control form-control-sm"
+                                   ng-model="user.password" required ng-minlength="8">
+                            <label data-error="wrong" data-success="right" for="password">Mot de passe</label>
+                        </div>
+
+                        <div class="md-form form-sm mb-4">
+                            <i class="fas fa-key prefix grey-text"></i>
+                            <input type="password" id="confirmdp" class="form-control form-control-sm"
+                                   ng-model="pwdconf" required ng-minlength="8">
+                            <label data-error="wrong" data-success="right" for="confirmdp">Confirmer mot de
+                                passe</label>
+                        </div>
+                    </div>
+
+                    <!--Footer-->
+                    <div class="modal-footer justify-content-center">
+                        <button type="submit" ng-click="save()" class="btn light-green waves-effect">Valider <i
+                                class="fas fa-paper-plane-o ml-1"></i></button>
+                    </div>
+                </form>
+            </div>
+            <!--/.Content-->
+        </div>
+    </div>
+
+    <!--Modal: Connexion User / Admin Form-->
+    <div class="modal fade" id="connexion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog cascading-modal" role="document">
+            <!--Content-->
+            <div class="modal-content">
+
+                <!--Modal cascading tabs-->
+                <div class="modal-c-tabs">
+
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs md-tabs tabs-2 light-green darken-3" role="tablist">
+                        <li class="nav-item">
+                            <button class="nav-link active" data-toggle="tab" href="#utilisateur" role="tab"><i
+                                    class="fas fa-user mr-1"></i>
+                                Utilisateur</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-toggle="tab" href="#administrateur" role="tab"><i
+                                    class="fas fa-user-plus mr-1"></i>
+                                Administrateur</button>
+                        </li>
+                    </ul>
+
+                    <!-- Tab panels -->
+                    <div class="tab-content">
+                        <!--Utilisateur-->
+                        <div class="tab-pane fade in show active" id="utilisateur" role="tabpanel">
+
+                            <!--Body-->
+                            <div class="modal-body mb-1">
+                                <div class="md-form form-sm mb-5">
+                                    <i class="fas fa-envelope prefix"></i>
+                                    <input type="text" id="pseudo_user" class="form-control form-control-sm validate">
+                                    <label data-error="wrong" data-success="right" for="pseudo_user">Pseudonyme</label>
+                                </div>
+
+                                <div class="md-form form-sm mb-4">
+                                    <i class="fas fa-lock prefix"></i>
+                                    <input type="password" id="password_user"
+                                           class="form-control form-control-sm validate">
+                                    <label data-error="wrong" data-success="right" for="password_user">Password</label>
+                                </div>
+                                <div class="text-center mt-2">
+                                    <button class="btn light-green">Connexion <i
+                                            class="fas fa-sign-in ml-1"></i></button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--/.Utilisateur-->
+
+                        <!--Administrateur-->
+                        <div class="tab-pane fade" id="administrateur" role="tabpanel">
+
+                            <!--Body-->
+                            <div class="modal-body">
+                                <div class="md-form form-sm mb-5">
+                                    <i class="fas fa-envelope prefix"></i>
+                                    <input type="text" id="pseudo_admin" class="form-control form-control-sm validate">
+                                    <label data-error="wrong" data-success="right" for="pseudo_admin">Pseudonyme</label>
+                                </div>
+
+                                <div class="md-form form-sm mb-5">
+                                    <i class="fas fa-lock prefix"></i>
+                                    <input type="password" id="password_admin"
+                                           class="form-control form-control-sm validate">
+                                    <label data-error="wrong" data-success="right" for="password_admin">Password</label>
+                                </div>
+
+                                <div class="text-center form-sm mt-2">
+                                    <button class="btn light-green">Connexion <i
+                                            class="fas fa-sign-in ml-1"></i></button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--/.Administrateur-->
+                    </div>
+
+                </div>
+            </div>
+            <!--/.Content-->
+        </div>
+    </div>
+    <!--Modal: Connexion User / Admin Form-->
+</div>
+
