@@ -2,10 +2,10 @@
 
 // Declare app level module which depends on views, and core components
 angular.module('toDoApp', [
-  'ngRoute',
-  'toDoApp.main',
-  'toDoApp.view2',
-  'toDoApp.version'
+    'ngRoute',
+    'toDoApp.main',
+    'toDoApp.user',
+    'toDoApp.version'
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');
