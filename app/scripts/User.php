@@ -43,12 +43,27 @@ class User
         $query->execute();
 
         return json_encode(['user' => [
-            'id'        => $this->db->lastInsertId(),
-            'name'      => $name,
-            'username'  => $username,
-            'password'  => $passHashed,
-            'email'     => $email
-        ]]);
+                                        'id'        => $this->db->lastInsertId(),
+                                        'name'      => $name,
+                                        'username'  => $username,
+                                        'password'  => $passHashed,
+                                        'email'     => $email
+                                        ]
+                            ]);
+    }
+
+    /**
+     * Get specific user
+     *
+     * @return string
+     */
+    public function get_user($username)
+    {
+        $query = $this->db->prepare("SELECT * FROM users WHERE username = :username");
+        $query->bindParam("username", $username, PDO::PARAM_STR);
+        $query->execute();
+        $user = $query->fetch(PDO::FETCH_ASSOC);
+        return $user;
     }
 
     /**
