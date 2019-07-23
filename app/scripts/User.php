@@ -71,9 +71,10 @@ class User
      *
      * @return string
      */
-    public function Read()
+    public function getTasks($id)
     {
-        $query = $this->db->prepare("SELECT * FROM tasks");
+        $query = $this->db->prepare("SELECT * FROM tasks WHERE user_id = :id");
+        $query->bindParam("id", $id, PDO::PARAM_STR);
         $query->execute();
         $data = array();
         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {

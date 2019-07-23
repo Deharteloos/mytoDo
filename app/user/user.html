@@ -1,5 +1,198 @@
-<p>This is the partial for view 2.</p>
-<p>
-  Showing of 'interpolate' filter:
-  {{ 'Current version is v%VERSION%.' | interpolate }}
-</p>
+<header>
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark light-green">
+
+        <!-- Navbar brand -->
+        <a class="navbar-brand" href="#"><img src="images/Icon.png" height="40" class="d-inline-block align-top" alt="toDoIcon"></a>
+
+        <!-- Collapse button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+                aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Collapsible content -->
+        <div class="collapse navbar-collapse" id="basicExampleNav">
+
+            <!-- Links -->
+            <ul ng-controller="navCtrl" class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <!-- <ng-include ng-if="!connServ.isConnected" src="'connection_link.html'">
+                 </ng-include>-->
+                <li ng-if="!connServ" class="nav-item">
+                    <a class="nav-link" data-toggle="modal" data-target="#connexion">Se Connecter</a>
+                </li>
+                <!--<ng-include ng-if="connServ.isConnected" src="'connected_link.html'"></ng-include>-->
+                <li ng-if="connServ" class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user"></i> {{user.name}} </a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
+                        <a class="dropdown-item" href="#">Profil</a>
+                        <a class="dropdown-item" href="#">Changer de mot de passe</a>
+                        <a class="dropdown-item" href="#">Se déconnecter</a>
+                    </div>
+                </li>
+            </ul>
+            <!-- Links -->
+
+        </div>
+        <!-- Collapsible content -->
+
+    </nav>
+    <!--/.Navbar-->
+    <div class="view" ></div>
+</header>
+
+<main ng-controller="userCtrl" class="container-fluid">
+    <!--<div ng-view></div>-->
+
+    <!--<p>This is the partial for view 2.</p>
+    <p>
+        Showing of 'interpolate' filter:
+        {{ 'Current version is v%VERSION%.' | interpolate }}
+    </p>-->
+
+    <button data-toggle="modal" data-target="#creerTacheForm" type="button" class="btn btn-light-green">Créer une tâche</button>
+
+    <!-- Table with panel -->
+    <div class="card card-cascade narrower">
+        <!--Card image-->
+        <div class="view view-cascade gradient-card-header green-gradient narrower py-2 mx-4 mb-3 justify-content-between align-items-center">
+            <a href="" class="white-text mx-3">Liste des tâches</a>
+        </div>
+        <!--/Card image-->
+        <div class="px-4">
+            <div class="table-wrapper">
+                <!--Table-->
+                <table class="table table-hover mb-0">
+                    <!--Table head-->
+                    <thead>
+                    <tr>
+                        <th class="th-lg">
+                            <a>Titre
+                                <i class="fas fa-sort ml-1"></i>
+                            </a>
+                        </th>
+                        <th class="th-lg">
+                            <a href="">Description
+                                <i class="fas fa-sort ml-1"></i>
+                            </a>
+                        </th>
+                        <th class="th-lg">
+                            <a href="">Durée estimée
+                                <i class="fas fa-sort ml-1"></i>
+                            </a>
+                        </th>
+                        <th class="th-lg">
+                            <a href="">Commencée le
+                                <i class="fas fa-sort ml-1"></i>
+                            </a>
+                        </th>
+                        <th class="th-lg">
+                            <a href="">Terminée le
+                                <i class="fas fa-sort ml-1"></i>
+                            </a>
+                        </th>
+                    </tr>
+                    </thead>
+                    <!--Table head-->
+                    <!--Table body-->
+                    <tbody>
+                    <tr ng-repeat="task in tasks.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage))">
+                        <td>{{task.title}}</td>
+                        <td>{{task.description}}</td>
+                        <td>{{trunk(task.duration / 60)}}h{{(task.duration % 60)}}min</td>
+                        <td>{{task.started_at}}</td>
+                        <td>{{task.ended_at}}</td>
+                    </tr>
+                    </tbody>
+                    <!--Table body-->
+                </table>
+                <!--Table-->
+            </div>
+        </div>
+    </div>
+    <!-- Table with panel  ng-table="tasksTable" -->
+    <ul uib-pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()" class="pagination-sm" max-size="maxSize" rotate="false" items-per-page="itemsPerPage"></ul>
+
+    <div class="modal fade" id="creerTacheForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold">Nouvelle tâche</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mx-3">
+                    <div class="md-form">
+                        <input type="text" id="title" ng-model="newTask.title" class="form-control" required>
+                        <label data-error="wrong" data-success="right" for="title">Titre</label>
+                    </div>
+
+                    <div class="md-form">
+                        <textarea type="text" id="description" ng-model="newTask.description" class="md-textarea form-control" rows="4"></textarea>
+                        <label data-error="wrong" data-success="right" for="description">Description</label>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="md-form">
+                                <label>Durée estimée</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="md-form">
+                                <input type="number" min="0" value="0" id="duration_hour" ng-model="duration_hour" class="form-control">
+                                <label data-error="wrong" data-success="right" for="duration_hour">Heures</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="md-form">
+                                <input type="number" min="0" max="59" id="duration_minute" ng-model="duration_minute" class="form-control" required>
+                                <label data-error="wrong" data-success="right" for="duration_minute">Minutes</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="md-form">
+                                <label data-error="wrong" data-success="right" for="started_at">Commencée le</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="md-form">
+                                <input type="datetime-local" id="started_at" ng-model="newTask.started_at" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="md-form">
+                                <label data-error="wrong" data-success="right" for="ended_at">Terminée le</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="md-form">
+                                <input type="datetime-local" id="ended_at" ng-model="newTask.ended_at" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button ng-click="saveTask()" class="btn btn-light-green">Créer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>

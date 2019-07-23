@@ -205,3 +205,15 @@ button.nav-link {
   opacity: 1;
 }
 
+.green-gradient {
+  background: -webkit-linear-gradient(50deg, #aeea00, #84b946) !important;
+  background: -o-linear-gradient(50deg, #aeea00, #84b946) !important;
+  background: linear-gradient(40deg, #aeea00, #84b946) !important; }
+
+div.card.card-cascade.narrower {
+    margin-top: 2%;
+}
+
+main.container-fluid {
+  height:90vh;
+}

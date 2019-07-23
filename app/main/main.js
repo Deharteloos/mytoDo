@@ -13,6 +13,11 @@ angular.module('toDoApp.main', ['ngRoute'])
 
 }])
 
+.controller('navCtrl', ['$scope', 'connService', function ($scope, connService) {
+    $scope.connServ = sessionStorage.getItem('isConnected');
+    $scope.user = JSON.parse(sessionStorage.getItem('user'));
+}])
+
 .controller('InscriptionCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.users = [];
     $scope.save = function () {
@@ -25,14 +30,13 @@ angular.module('toDoApp.main', ['ngRoute'])
 
                 $scope.users.push(e.data.user);
                 $('#inscription').modal('hide');
-                console.log($scope.users);
             }, function error(e) {
                 $scope.errors = e.data.errors;
             });
     };
 }])
 
-.controller('ConnectionCtrl', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+.controller('ConnectionCtrl', ['$scope', '$http', '$location', 'connService', function ($scope, $http, $location, connService) {
     // Récupération de l'utilisateur
     $scope.user = [];
     $scope.result = "res";
@@ -47,21 +51,21 @@ angular.module('toDoApp.main', ['ngRoute'])
                 //console.log(response.data.user);
                 $('#connexion').modal('hide');
                 if(angular.equals('Authentification réussie', $scope.result)) {
-                    $location.path('users/' + $scope.user.username ).search('user', $scope.user);
-                    console.log('ok');
+                    //connService.user = $scope.user;
+                    sessionStorage.setItem('isConnected', true);
+                    $location.path('users/' + $scope.user.username )/*.search('user', $scope.user)*/;
+                    sessionStorage.setItem('user', JSON.stringify($scope.user));
+                    sessionStorage.setItem('username', $scope.user.username);
                 }
             }, function error(e, status) {
                 console.log(status);
             });
     };
 
-    /*$scope.listTasks = function () {
-        $http.get('script/list.php', {})
-            .then(function success(e) {
-                $scope.tasks = e.data.tasks;
-            }, function error(e) {
+}])
 
-            });
-    };
-    $scope.listTasks();*/
-}]);
+.service('connService', function () {
+    this.isConnected = false;
+    this.user = {};
+});
+

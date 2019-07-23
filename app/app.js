@@ -3,6 +3,7 @@
 // Declare app level module which depends on views, and core components
 angular.module('toDoApp', [
     'ngRoute',
+    'ui.bootstrap',
     'toDoApp.main',
     'toDoApp.user',
     'toDoApp.version'
