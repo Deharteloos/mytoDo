@@ -24,10 +24,11 @@ if (isset($data['pseudo']) && isset($data['password'])) {
                 'name'      => $user['name'],
                 'username'  => $user['username'],
                 'email'     => $user['email'],
+                'password'  => $user['password'],
                 'created_by'=> $user['created_by']
             ]]);
     }
     else {
-        echo json_encode(['result' => ["Echec de l'authentification"], 'user' => []]);
+        echo json_encode(['result' => 'Echec de l\'authentification', 'user' => []]);
     }
 }

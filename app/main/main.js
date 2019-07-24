@@ -9,13 +9,27 @@ angular.module('toDoApp.main', ['ngRoute'])
   });
 }])
 
-.controller('mainCtrl', [function() {
+.controller('mainCtrl', ['$scope', '$location', function($scope, $location) {
+    $scope.connServ = sessionStorage.getItem('isConnected');
+    $scope.dashboard = function () {
+          $location.path('/users/'+sessionStorage.getItem('username'));
+    };
 
 }])
 
-.controller('navCtrl', ['$scope', 'connService', function ($scope, connService) {
+.controller('navCtrl', ['$scope', '$location', function ($scope, $location) {
     $scope.connServ = sessionStorage.getItem('isConnected');
     $scope.user = JSON.parse(sessionStorage.getItem('user'));
+
+    $scope.deconnect = function () {
+        sessionStorage.clear();
+        $location.path('/');
+    };
+
+    $scope.profil = function () {
+        console.log('users/'+sessionStorage.getItem('username')+'/profil');
+        $location.path('users/'+sessionStorage.getItem('username')+'/profil');
+    };
 }])
 
 .controller('InscriptionCtrl', ['$scope', '$http', function ($scope, $http) {

@@ -32,9 +32,8 @@
                        aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-user"></i> {{user.name}} </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
-                        <a class="dropdown-item" href="#">Profil</a>
-                        <a class="dropdown-item" href="#">Changer de mot de passe</a>
-                        <a class="dropdown-item" href="#">Se déconnecter</a>
+                        <a class="dropdown-item" ng-click="profil()" href="">Profil</a>
+                        <a ng-click="deconnect()" class="dropdown-item" href="#">Se déconnecter</a>
                     </div>
                 </li>
             </ul>
@@ -57,7 +56,7 @@
         {{ 'Current version is v%VERSION%.' | interpolate }}
     </p>-->
 
-    <button data-toggle="modal" data-target="#creerTacheForm" type="button" class="btn btn-light-green">Créer une tâche</button>
+    <button ng-click="initForm()" data-toggle="modal" data-target="#creerTacheForm" type="button" class="btn btn-light-green">Créer une tâche</button>
 
     <!-- Table with panel -->
     <div class="card card-cascade narrower">
@@ -103,7 +102,7 @@
                     <!--Table head-->
                     <!--Table body-->
                     <tbody>
-                    <tr ng-repeat="task in tasks.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage))">
+                    <tr ng-click="showEditTask(task)" ng-repeat="task in tasks.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage))">
                         <td>{{task.title}}</td>
                         <td>{{task.description}}</td>
                         <td>{{trunk(task.duration / 60)}}h{{(task.duration % 60)}}min</td>
@@ -121,23 +120,23 @@
     <ul uib-pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()" class="pagination-sm" max-size="maxSize" rotate="false" items-per-page="itemsPerPage"></ul>
 
     <div class="modal fade" id="creerTacheForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true">
+         aria-hidden="true" data-backdrop="false">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header text-center">
-                    <h4 class="modal-title w-100 font-weight-bold">Nouvelle tâche</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <h4 class="modal-title w-100 font-weight-bold">{{modalTitle}}</h4>
+                    <button ng-click="clearModal()" type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body mx-3">
                     <div class="md-form">
-                        <input type="text" id="title" ng-model="newTask.title" class="form-control" required>
+                        <input type="text" id="title" ng-model="newTask.title" class="form-control mod" required>
                         <label data-error="wrong" data-success="right" for="title">Titre</label>
                     </div>
 
                     <div class="md-form">
-                        <textarea type="text" id="description" ng-model="newTask.description" class="md-textarea form-control" rows="4"></textarea>
+                        <textarea type="text" id="description" ng-model="newTask.description" class="md-textarea form-control mod" rows="4"></textarea>
                         <label data-error="wrong" data-success="right" for="description">Description</label>
                     </div>
 
@@ -149,13 +148,13 @@
                         </div>
                         <div class="col">
                             <div class="md-form">
-                                <input type="number" min="0" value="0" id="duration_hour" ng-model="duration_hour" class="form-control">
+                                <input type="number" min="0" value="0" id="duration_hour" ng-model="duration_hour" class="form-control mod">
                                 <label data-error="wrong" data-success="right" for="duration_hour">Heures</label>
                             </div>
                         </div>
                         <div class="col">
                             <div class="md-form">
-                                <input type="number" min="0" max="59" id="duration_minute" ng-model="duration_minute" class="form-control" required>
+                                <input type="number" min="0" max="59" id="duration_minute" ng-model="duration_minute" class="form-control mod" required>
                                 <label data-error="wrong" data-success="right" for="duration_minute">Minutes</label>
                             </div>
                         </div>
@@ -189,7 +188,7 @@
 
                 </div>
                 <div class="modal-footer d-flex justify-content-center">
-                    <button ng-click="saveTask()" class="btn btn-light-green">Créer</button>
+                    <button ng-click="saveTask(modalTitle)" class="btn btn-light-green">{{modalAction}}</button>
                 </div>
             </div>
         </div>

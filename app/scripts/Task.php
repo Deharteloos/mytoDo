@@ -63,4 +63,26 @@ class Task
         ]);
     }
 
+    /**
+     * Update Task
+     *
+     * @param $id
+     * @param $title
+     * @param $description
+     * @param $duration
+     * @param $started_at
+     * @param $ended_at
+     */
+    public function Update($id, $title, $description, $duration, $started_at, $ended_at)
+    {
+        $query = $this->db->prepare("UPDATE tasks SET title = :title, description = :description, duration = :duration, started_at = :started_at, ended_at = :ended_at WHERE id = :id");
+        $query->bindParam("id", $id, PDO::PARAM_STR);
+        $query->bindParam("title", $title, PDO::PARAM_STR);
+        $query->bindParam("description", $description, PDO::PARAM_STR);
+        $query->bindParam("duration", $duration, PDO::PARAM_STR);
+        $query->bindParam("started_at", $started_at, PDO::PARAM_STR);
+        $query->bindParam("ended_at", $ended_at, PDO::PARAM_STR);
+        $query->execute();
+    }
+
 }

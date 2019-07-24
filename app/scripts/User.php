@@ -86,19 +86,44 @@ class User
 
 
     /**
-     * Update Task
+     * Update User
      *
+     * @param $username
      * @param $name
-     * @param $description
-     * @param $task_id
+     * @param $email
      */
-    public function Update($name, $description, $task_id)
+    public function Update($username, $name, $email, $user_id)
     {
-        $query = $this->db->prepare("UPDATE tasks SET name = :name, description = :description WHERE id = :id");
+        $query = $this->db->prepare("UPDATE users SET username = :username, name = :name, email = :email WHERE id = :id");
+        $query->bindParam("username", $username, PDO::PARAM_STR);
         $query->bindParam("name", $name, PDO::PARAM_STR);
-        $query->bindParam("description", $description, PDO::PARAM_STR);
-        $query->bindParam("id", $task_id, PDO::PARAM_STR);
+        $query->bindParam("email", $email, PDO::PARAM_STR);
+        $query->bindParam("id", $user_id, PDO::PARAM_STR);
         $query->execute();
+    }
+
+    /**
+     * Update User Password
+     *
+     * @param $formerPwd
+     * @param $newPwd
+     * @param $pwd
+     * @param $user_id
+     * @return string
+     */
+    public function UpdatePassword($formerPwd, $newPwd, $pwd, $user_id)
+    {
+        if(!password_verify($formerPwd, $pwd)) {
+            return json_encode(['error' => 'Mauvais mot de passe']);
+        }
+        else {
+            $newPwd = password_hash($newPwd, PASSWORD_BCRYPT);
+            $query = $this->db->prepare("UPDATE users SET password = :password WHERE id = :id");
+            $query->bindParam("password", $newPwd, PDO::PARAM_STR);
+            $query->bindParam("id", $user_id, PDO::PARAM_STR);
+            $query->execute();
+            return json_encode(['pwd' => $newPwd]);
+        }
     }
 
     /**

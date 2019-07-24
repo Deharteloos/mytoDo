@@ -32,9 +32,8 @@
                        aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-user"></i> {{user.name}} </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
-                        <a class="dropdown-item" href="#">Profil</a>
-                        <a class="dropdown-item" href="#">Changer de mot de passe</a>
-                        <a class="dropdown-item" href="#">Se déconnecter</a>
+                        <a class="dropdown-item" ng-click="profil()" href="">Profil</a>
+                        <a ng-click="deconnect()" class="dropdown-item" href="#">Se déconnecter</a>
                     </div>
                 </li>
             </ul>
@@ -61,7 +60,7 @@
                 <!--Grid row-->
                 <div class="row">
                     <!--Grid column-->
-                    <div class="col-md-12 mb-4 white-text text-center">
+                    <div ng-controller="mainCtrl" class="col-md-12 mb-4 white-text text-center">
                         <!--<h1 class="h1-reponsive white-text font-weight-bold mb-0 pt-md-5 pt-5 wow fadeInDown"
                             data-wow-delay="0.3s"
                             style="font-size: 5rem; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif ">
@@ -76,10 +75,11 @@
                             consectetur adipisicing elit. Quisquam, aperiam?</strong></h5>
                         <!--<a data-toggle="modal" data-target="#inscription" class="btn btn-outline-white wow fadeInDown"
                            data-wow-delay="0.4s">S'inscrire</a>-->
-                        <a data-toggle="modal" data-target="#inscription" class="btn btn-outline-white wow fadeInDown animated" data-wow-delay="0.4s" style="visibility: visible; animation-name: fadeInDown; animation-delay: 0.4s;">S'inscrire</a>
+                        <a ng-if="!connServ" data-toggle="modal" data-target="#inscription" class="btn btn-outline-white wow fadeInDown animated" data-wow-delay="0.4s" style="visibility: visible; animation-name: fadeInDown; animation-delay: 0.4s;">S'inscrire</a>
                         <!--<a data-toggle="modal" data-target="#connexion" class="btn btn-outline-white wow fadeInDown"
                            data-wow-delay="0.4s">Se connecter</a>-->
-                        <a data-toggle="modal" data-target="#connexion" class="btn btn-outline-white wow fadeInDown animated" data-wow-delay="0.4s" style="visibility: visible; animation-name: fadeInDown; animation-delay: 0.4s;">Se connecter</a>
+                        <a ng-if="!connServ" data-toggle="modal" data-target="#connexion" class="btn btn-outline-white wow fadeInDown animated" data-wow-delay="0.4s" style="visibility: visible; animation-name: fadeInDown; animation-delay: 0.4s;">Se connecter</a>
+                        <a ng-if="connServ" ng-click="dashboard()" class="btn btn-outline-white wow fadeInDown animated" data-wow-delay="0.4s" style="visibility: visible; animation-name: fadeInDown; animation-delay: 0.4s;">Tâches</a>
                     </div>
                     <!--Grid column-->
                 </div>
@@ -208,19 +208,19 @@
                                 <div class="modal-body">
                                     <div class="md-form form-sm mb-5">
                                         <i class="fas fa-envelope prefix"></i>
-                                        <input type="text" id="pseudo_admin" class="form-control form-control-sm validate">
+                                        <input type="text" id="pseudo_admin" class="form-control form-control-sm validate" ng-model="pseudo_admin">
                                         <label data-error="wrong" data-success="right" for="pseudo_admin">Pseudonyme</label>
                                     </div>
 
                                     <div class="md-form form-sm mb-5">
                                         <i class="fas fa-lock prefix"></i>
                                         <input type="password" id="password_admin"
-                                               class="form-control form-control-sm validate">
+                                               class="form-control form-control-sm validate" ng-model="password_admin">
                                         <label data-error="wrong" data-success="right" for="password_admin">Password</label>
                                     </div>
 
                                     <div class="text-center form-sm mt-2">
-                                        <button class="btn light-green">Connexion <i
+                                        <button ng-click="admin_connect()" class="btn light-green">Connexion <i
                                                 class="fas fa-sign-in ml-1"></i></button>
                                     </div>
                                 </div>
