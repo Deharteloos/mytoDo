@@ -6,6 +6,7 @@ angular.module('toDoApp', [
     'ui.bootstrap',
     'toDoApp.main',
     'toDoApp.user',
+    'toDoApp.admins',
     'toDoApp.version'
 ])
 

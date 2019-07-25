@@ -121,14 +121,22 @@ angular.module('toDoApp.user', ['ngRoute'])
     $scope.listTasks();
 }])
 
-.controller('profilCtrl', ['$scope', '$http', '$location', function ($scope, $http, $location) {
-    var user = JSON.parse(sessionStorage.getItem('user'));
+.controller('profilCtrl', ['$scope', '$http', '$location', '$route', function ($scope, $http, $location, $route) {
+    var user, diff;
+    if(sessionStorage.getItem('user') === null) {
+        user = JSON.parse(sessionStorage.getItem('admin'));
+        diff = 'admin';
+    }
+    else {
+        user = JSON.parse(sessionStorage.getItem('user'));
+        diff = 'user';
+    }
     $scope.username = user.username;
     $scope.name = user.name;
     $scope.email = user.email;
 
     $scope.updateProfile = function () {
-        $http.post('scripts/update_user.php', {
+        $http.post('scripts/update_'+diff+'.php', {
             username: $scope.username,
             name: $scope.name,
             email: $scope.email,
@@ -138,32 +146,33 @@ angular.module('toDoApp.user', ['ngRoute'])
                 user.name = $scope.name;
                 user.username = $scope.username;
                 user.email = $scope.email;
-                sessionStorage.setItem('user', JSON.stringify(user));
+                sessionStorage.setItem(diff, JSON.stringify(user));
                 sessionStorage.setItem('username', user.username);
-                $location.path('users/'+user.username+'/profil');
+                if(diff === 'user')
+                    $location.path('users/'+user.username+'/profil');
+                else
+                    $location.path('admin/'+user.username+'/profil');
             }, function error(e) {
 
             });
     };
 
     $scope.updatePassword = function () {
-        console.log(user);
-        $http.post('scripts/update_userPwd.php', {
+        $http.post('scripts/update_'+diff+'Pwd.php', {
             formerPwd: $scope.formerPwd,
             newPwd: $scope.newPwd,
             id: user.id,
             pwd : user.password
         })
             .then(function success(e) {
-                if(e.data.error === undefined && e.data.pwd !== undefined) {
+                if(e.data.error === undefined && e.data.pwd.length > 0) {
                     user.password = e.data.pwd;
-                    sessionStorage.setItem('user', JSON.stringify(user));
-                    $location.path('users/'+user.username+'/profil');
+                    sessionStorage.setItem(diff, JSON.stringify(user));
+                    $route.reload();
                 }
                 else {
-                    console.log(e.data.error);
-                    $location.path('users/'+user.username+'/profil');
                     alert(e.data.error);
+                    $route.reload();
                 }
             }, function error(e) {
 
@@ -176,43 +185,3 @@ angular.module('toDoApp.user', ['ngRoute'])
 });
 
 
-
-/*
-.controller("taskListCtrl", ['$scope', '$http', 'shareUser', function ($scope, $http, shareUser) {
-
-    // List of task
-    $scope.tasks = [];
-    $scope.totalItems = $scope.tasks.length;
-    $scope.currentPage = 1;
-    $scope.itemsPerPage = 5;
-    $scope.maxSize = 3; //Number of pager buttons to show
-    $scope.user = shareUser.user;
-    var _id = $scope.user.id;
-
-    $scope.listTasks = function () {
-        $http.post('scripts/task_list.php', {
-            id: _id
-        })
-            .then(function success(e) {
-                $scope.tasks = e.data.tasks;
-            }, function error(e) {
-
-            });
-    };
-    $scope.listTasks();
-
-    $scope.setPage = function (pageNo) {
-        $scope.currentPage = pageNo;
-    };
-
-    $scope.pageChanged = function() {
-        console.log('Page changed to: ' + $scope.currentPage);
-    };
-
-    $scope.setItemsPerPage = function(num) {
-        $scope.itemsPerPage = num;
-        $scope.currentPage = 1; //reset to first page
-    }
-
-}])
-*/

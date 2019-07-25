@@ -1,13 +1,18 @@
 <?php
+/**
+ * Created by IntelliJ IDEA.
+ * User: Boris Ebwanga
+ * Date: 24/07/2019
+ * Time: 16:22
+ */
 
 require __DIR__ . '\connection.php';
 
 /**
- * Class User
+ * Class Admin
  */
-class User
+class Admin
 {
-
     /**
      * @var mysqli|PDO|string
      */
@@ -22,7 +27,7 @@ class User
     }
 
     /**
-     * Add new User
+     * Add new Admin
      *
      * @param $name
      * @param $email
@@ -35,7 +40,7 @@ class User
     {
         $passHashed = password_hash($password, PASSWORD_BCRYPT);
 
-        $query = $this->db->prepare("INSERT INTO users(name, username, password, email) VALUES (:name,:username,:password,:email)");
+        $query = $this->db->prepare("INSERT INTO admins(name, username, password, email) VALUES (:name,:username,:password,:email)");
         $query->bindParam("name", $name, PDO::PARAM_STR);
         $query->bindParam("username", $username, PDO::PARAM_STR);
         $query->bindParam("password", $passHashed, PDO::PARAM_STR);
@@ -43,27 +48,27 @@ class User
         $query->execute();
 
         return json_encode(['user' => [
-                                        'id'        => $this->db->lastInsertId(),
-                                        'name'      => $name,
-                                        'username'  => $username,
-                                        'password'  => $passHashed,
-                                        'email'     => $email
-                                        ]
-                            ]);
+            'id'        => $this->db->lastInsertId(),
+            'name'      => $name,
+            'username'  => $username,
+            'password'  => $passHashed,
+            'email'     => $email
+        ]
+        ]);
     }
 
     /**
-     * Get specific user
+     * Get specific admin
      *
      * @return string
      */
-    public function get_user($username)
+    public function get_admin($username)
     {
-        $query = $this->db->prepare("SELECT * FROM users WHERE username = :username");
+        $query = $this->db->prepare("SELECT * FROM admins WHERE username = :username");
         $query->bindParam("username", $username, PDO::PARAM_STR);
         $query->execute();
-        $user = $query->fetch(PDO::FETCH_ASSOC);
-        return $user;
+        $admin = $query->fetch(PDO::FETCH_ASSOC);
+        return $admin;
     }
 
     /**
@@ -71,10 +76,10 @@ class User
      *
      * @return string
      */
-    public function getTasks($id)
+    public function getTasks()
     {
-        $query = $this->db->prepare("SELECT * FROM tasks WHERE user_id = :id");
-        $query->bindParam("id", $id, PDO::PARAM_STR);
+        $query = $this->db->prepare("SELECT * FROM tasks");
+        //$query->bindParam("id", $id, PDO::PARAM_STR);
         $query->execute();
         $data = array();
         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
@@ -86,55 +91,44 @@ class User
 
 
     /**
-     * Update User
+     * Update Admin
      *
      * @param $username
      * @param $name
      * @param $email
+     * @param $admin_id
      */
-    public function Update($username, $name, $email, $user_id)
+    public function Update($username, $name, $email, $admin_id)
     {
-        $query = $this->db->prepare("UPDATE users SET username = :username, name = :name, email = :email WHERE id = :id");
+        $query = $this->db->prepare("UPDATE admins SET username = :username, name = :name, email = :email WHERE id = :id");
         $query->bindParam("username", $username, PDO::PARAM_STR);
         $query->bindParam("name", $name, PDO::PARAM_STR);
         $query->bindParam("email", $email, PDO::PARAM_STR);
-        $query->bindParam("id", $user_id, PDO::PARAM_STR);
+        $query->bindParam("id", $admin_id, PDO::PARAM_STR);
         $query->execute();
     }
 
     /**
-     * Update User Password
+     * Update Admin Password
      *
      * @param $formerPwd
      * @param $newPwd
      * @param $pwd
-     * @param $user_id
+     * @param $admin_id
      * @return string
      */
-    public function UpdatePassword($formerPwd, $newPwd, $pwd, $user_id)
+    public function UpdatePassword($formerPwd, $newPwd, $pwd, $admin_id)
     {
         if(!password_verify($formerPwd, $pwd)) {
             return json_encode(['error' => 'Mot de passe incorrect']);
         }
         else {
             $newPwd = password_hash($newPwd, PASSWORD_BCRYPT);
-            $query = $this->db->prepare("UPDATE users SET password = :password WHERE id = :id");
+            $query = $this->db->prepare("UPDATE admins SET password = :password WHERE id = :id");
             $query->bindParam("password", $newPwd, PDO::PARAM_STR);
-            $query->bindParam("id", $user_id, PDO::PARAM_STR);
+            $query->bindParam("id", $admin_id, PDO::PARAM_STR);
             $query->execute();
             return json_encode(['pwd' => $newPwd]);
         }
-    }
-
-    /**
-     * Delete Task
-     *
-     * @param $task_id
-     */
-    public function Delete($task_id)
-    {
-        $query = $this->db->prepare("DELETE FROM tasks WHERE id = :id");
-        $query->bindParam("id", $task_id, PDO::PARAM_STR);
-        $query->execute();
     }
 }

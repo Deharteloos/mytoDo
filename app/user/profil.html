@@ -31,7 +31,7 @@
                 <li ng-if="connServ" class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-user"></i> {{user.name}} </a>
+                        <i class="fas fa-user"></i> {{name}} </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
                         <a class="dropdown-item" ng-click="profil()" href="">Profil</a>
                         <a ng-click="deconnect()" class="dropdown-item" href="#">Se déconnecter</a>
@@ -59,7 +59,7 @@
         <div class="card-body px-lg-5">
 
             <!-- Form -->
-            <form class="text-center" style="color: #757575;" action="#!">
+            <form class="text-center" style="color: #757575;" action="">
                 <!-- Username -->
                 <div class="md-form mt-3">
                     <input type="text" ng-model="username" id="username" class="form-control mod">
@@ -97,7 +97,7 @@
         <div class="card-body px-lg-5">
 
             <!-- Form -->
-            <form novalidate name="upForm" class="text-center" style="color: #757575;" action="#!">
+            <form novalidate name="upForm" class="text-center" style="color: #757575;" action="">
                 <!-- Username -->
                 <div class="md-form mt-3">
                     <input type="password" ng-model="formerPwd" id="formerPwd" class="form-control" required>
@@ -106,12 +106,12 @@
                 </div>
 
                 <div class="md-form mt-3">
-                    <input type="password" ng-model="newPwd" id="newPwd" name="newPwd" class="form-control" required>
+                    <input type="password" ng-model="newPwd" id="newPwd" class="form-control" required>
                     <label for="name">Nouveau mot de passe</label>
                 </div>
 
                 <div class="md-form">
-                    <input ng-model="cnewPwd" equals-to="newPwd" type="password" id="cnewPwd" name="cnewPwd" class="form-control" required>
+                    <input ng-model="cnewPwd" equals-to="newPwd" id="cnewPwd" type="password" class="form-control" required>
                     <label data-error="Mots de passe non identiques" data-success="Mots de passe identiques" for="cnewPwd">Confirmer nouveau mot de passe</label>
                 </div>
 

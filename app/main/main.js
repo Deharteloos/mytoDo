@@ -12,7 +12,10 @@ angular.module('toDoApp.main', ['ngRoute'])
 .controller('mainCtrl', ['$scope', '$location', function($scope, $location) {
     $scope.connServ = sessionStorage.getItem('isConnected');
     $scope.dashboard = function () {
-          $location.path('/users/'+sessionStorage.getItem('username'));
+        if(sessionStorage.getItem('user') !== null)
+            $location.path('/users/'+sessionStorage.getItem('username'));
+        if(sessionStorage.getItem('admin') !== null)
+            $location.path('/admin/'+sessionStorage.getItem('username'));
     };
 
 }])
@@ -20,7 +23,9 @@ angular.module('toDoApp.main', ['ngRoute'])
 .controller('navCtrl', ['$scope', '$location', function ($scope, $location) {
     $scope.connServ = sessionStorage.getItem('isConnected');
     $scope.user = JSON.parse(sessionStorage.getItem('user'));
-
+    $scope.admin = JSON.parse(sessionStorage.getItem('admin'));
+    if($scope.connServ)
+        $scope.name = (sessionStorage.getItem('user') === null) ? $scope.admin.name : $scope.user.name;
     $scope.deconnect = function () {
         sessionStorage.clear();
         $location.path('/');
@@ -75,6 +80,28 @@ angular.module('toDoApp.main', ['ngRoute'])
                 console.log(status);
             });
     };
+
+    $scope.admin_connect = function () {
+        $http.post('scripts/connection_admin.php', {
+            pseudo: $scope.pseudo_admin,
+            password: $scope.password_admin
+        })
+            .then(function success(response) {
+                $scope.result = response.data.result;
+                $scope.admin = response.data.admin;
+                //console.log(response.data.user);
+                $('#connexion').modal('hide');
+                if(angular.equals('Authentification réussie', $scope.result)) {
+                    //connService.user = $scope.user;
+                    sessionStorage.setItem('isConnected', true);
+                    $location.path('admin/' + $scope.admin.username );
+                    sessionStorage.setItem('admin', JSON.stringify($scope.admin));
+                    sessionStorage.setItem('username', $scope.admin.username);
+                }
+            }, function error(e, status) {
+                console.log(status);
+            });
+    }
 
 }])
 

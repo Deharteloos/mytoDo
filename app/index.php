@@ -55,6 +55,7 @@
     <script src="app.js"></script>
     <script src="main/main.js"></script>
     <script src="user/user.js"></script>
+    <script src="admins/admin.js"></script>
     <script src="core/version/version.js"></script>
     <script src="core/version/version-directive.js"></script>
     <script src="core/version/interpolate-filter.js"></script>
